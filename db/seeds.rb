@@ -19,7 +19,7 @@ puts "Monsters..."
 5.times do
   Kaiju.create(
     name: Faker::Ancient.primordial,
-    powers: Faker::Superhero.power
+    powers: "#{Faker::Science.modifier} #{Faker::Superhero.power}"
   )
 end
 
