@@ -116,7 +116,7 @@ city in the database.
   - returns the kaiju with the most monster_attacks
 
 - `Kaiju#redact_reports`
-  - deletes all `monster_attacks` associated with that kaiju
+  - deletes all `monster_attacks` associated with the kaiju
 
 #### MonsterAttack
 
@@ -137,7 +137,6 @@ city in the database.
 
 - `City#full_reports`
   - returns an array of strings where every string is the `full_report` for each `MonsterAttack` for that city
+
 - `City#average_severity`
   - returns the average severity level for all monster attacks
-- `City#most_requent_kaiju`
-  - returns the kaiju that has attacked the city most often
