@@ -1,14 +1,11 @@
-# Phase 3 Mock Code Challenge: Famous Paintings
+# Phase 3 Mock Challenge: Kaiju Attack!
 
-We have three models: `Museum`, `Painting`, and `Artist`.
+We have three models: `City`, `Kaiju`, and `MonsterAttack`.
 
-For our purposes, a `Museum` has many `Painting`s, an `Artist` has many
-`Painting`s, and a `Painting` belongs to a `Museum` and to an `Artist`.
+For our purposes, a `City` has many `MosnterAttack`s, a `Kaiju` has many
+`MonsterAttack`s, and a `MonsterAttack` belongs to a `City` and a `Kaiju`.
 
-`Museum` - `Artist` is a many to many relationship.
-
-**Note**: You should draw your domain on paper or on a whiteboard _before you
-start coding_. Remember to identify a single source of truth for your data.
+`City` - `Kaiju` is a many to many relationship.
 
 ## Instructions
 
@@ -18,7 +15,7 @@ Build out all of the methods listed in the deliverables. The methods are listed
 in a suggested order, but you can feel free to tackle the ones you think are
 easiest. Some of the later methods may rely on earlier ones.
 
-This mock code challenge has no tests. You'll need to create your own sample instances so that you can try out your code on your own. Make sure your associations and methods work in the console.
+This code challenge has no tests. You'll need to create your own sample instances so that you can try out your code on your own. Make sure your associations and methods work in the console.
 
 We've provided you with a tool that you can use to test your code. To use it,
 run `rake console` from the command line. This will start a `pry` session with
@@ -28,27 +25,24 @@ models and associations.
 
 ## What You Already Have
 
-The starter code has migrations and models for the initial `Museum` and
-`Artist` models, and seed data for some `Museum`s and `Artist`s. The
-schema currently looks like this:
+The starter code has migrations and models for the initial `City` and
+`Kaiju` models. The schema currently looks like this:
 
-### `museums` Table
+### `cities` Table
 
-| Column | Type    |
-| ------ | ------- |
-| name   | String  |
-| city   | String |
+| Column       | Type    |
+| ------------ | ------- |
+| name         | String  |
+| population   | Integer |
 
-### `artists` Table
+### `kaijus` Table
 
-| Column     | Type    |
-| ---------- | ------- |
-| first_name | String  |
-| last_name  | String  |
-| birthyear  | Integer |
-| style      | String  |
+| Column  | Type    |
+| ------- | ------- |
+| name    | String  |
+| powers  | String  |
 
-You will need to create the migration for the `paintings` table using the
+You will need to create the migration for the `monster_attacks` table using the
 attributes specified in the deliverables below.
 
 ## Deliverables
@@ -66,19 +60,16 @@ classes when you're approaching the deliverables below.
 ### Migrations
 
 Before working on the rest of the deliverables, you will need to create a
-migration for the `paintings` table.
+migration for the `monster_attacks` table.
 
-- A `Painting` belongs to an `Artist`, and a `Painting` also belongs to an
-  `Museum`. In your migration, create any columns your `paintings` table will
+- A `MonsterAttack` belongs to a `City`, and a `MonsterAttack` also belongs to a
+  `Kaiju`. In your migration, create any columns your `monster_attacks` table will
   need to establish these relationships.
-- The `paintings` table should also have:
-  - A `title` column that stores a string.
-  - A `price_in_us_dollars` column that stores an integer.
+- The `monster_attacks` table should also have:
+  - A `date` column that stores a string.
+  - An `incident_report` column that stores a string.
 
-After creating the `paintings` table using a migration, use the `seeds.rb` file to
-create instances of your `Painting` class so you can test your code.
-
-**Once you've set up your `paintings` table**, work on building out the following
+**Once you've set up your `monster_attacks` table**, work on building out the following
 deliverables.
 
 ### Object Relationship Methods
@@ -86,66 +77,39 @@ deliverables.
 Use Active Record association macros and Active Record query methods where
 appropriate (i.e. `has_many`, `has_many through`, and `belongs_to`).
 
-#### Painting
+#### MonsterAttack
 
-- `Painting#artist`
-  - should return the `Artist` instance for this painting
-- `Painting#museum`
-  - should return the `Museum` instance for this painting
+- `MonsterAttack#city`
+  - should return the `City` instance for this monster attack
+- `MonsterAttack#kaiju`
+  - should return the `Kaiju` instance for this monster attack
 
-#### Museum
+#### City
 
-- `Museum#paintings`
-  - returns a collection of all the paintings for the `Museum`
-- `Museum#artists`
-  - returns a collection of all the artists who have a painting in the `Museum`
+- `City#monster_attacks`
+  - returns a collection of all the monster attacks for the `City`
+- `City#kaijus`
+  - returns a collection of all the kaijus who have attacked the `City`
 
-#### Artist
+#### Kaiju
 
-- `Artist#paintings`
-  - should return a collection of all the paintings that the `Artist` has done
-- `Artist#museums`
-  - should return a collection of all the museums that the `Artist` have one of the artist's paintings
+- `Kaiju#monster_attacks`
+  - should return a collection of all the monster attacks that the `Kaiju` has done
+- `Kaiju#cities`
+  - should return a collection of all the cities that the `Kaiju` has attacked
 
 Use `rake console` and check that these methods work before proceeding. For
-example, you should be able to call `Artist.first.museums` and see a list
-of the museums for the first artist in the database based on your seed
-data; and `Painting.first.artist` should return the artist for the first
-painting in the database.
+example, you should be able to call `Kaiju.first.cities` and see a list
+of the cities for the first kaiju in the database based on your seed
+data; and `Cities.first.kaijus` should return the kaijus for the first
+city in the database.
 
 ### Aggregate and Association Methods
 
-#### Artist
+#### Kaiju
 
-- `Artist#full_name`
-  - returns the full name of the artist, with the first name and the last name
+- `Kaiju#full_name`
+  - returns the full name of the kaiju, with the first name and the last name
     concatenated, Western style.
-- `Artist.sort_by_year`
-  - uses `sort_by` in order to return the artists sorted by birth year.
-- `Artist#add_painting(museum, title, price_in_us_dollars)`
-  - takes a `museum` (an instance of the `Museum` class), a title, and a price
-  - creates a new painting for the artist associated to the given `museum`
-
-#### Painting
-
-- `Painting#description`
-  - should return a string formatted as follows:
-
-```txt
-{insert painting name} was painted by {insert artist full name} which currently
-resides in the {insert museum name}. It is currently priced at {insert painting
-price}.
-```
-
-#### Museum
-
-- `Museum#combined_value`
-  - returns the total combined price for each painting in the museum
-- `Museum#average_value`
-  - returns the average price for a painting in the museum
-- `Museum.fanciest`
-  - returns _one_ museum instance for the museum that has the highest average paintings price
-- `Museum#exhibit_artist(artist)`
-  - takes an `artist` (an instance of the `Artist` class) and
-  - moves all their paintings to this museum
-  - you will have to reassociate every painting belonging to the artist, how can you do that?
+- `Kaiju.most_attacks`
+  - returns the kaiju with the most monster_attacks
