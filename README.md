@@ -66,8 +66,8 @@ migration for the `monster_attacks` table.
   `Kaiju`. In your migration, create any columns your `monster_attacks` table will
   need to establish these relationships.
 - The `monster_attacks` table should also have:
-  - A `date` column that stores a string.
-  - An `incident_report` column that stores a string.
+  - A `severity` column that stores an integer.
+  - An `incident_report` column that stores a string (this should detail what happened during the attack).
 
 **Once you've set up your `monster_attacks` table**, work on building out the following
 deliverables.
@@ -108,8 +108,36 @@ city in the database.
 
 #### Kaiju
 
-- `Kaiju#full_name`
-  - returns the full name of the kaiju, with the first name and the last name
-    concatenated, Western style.
+- `Kaiju#attack_city(city, incident_report)`
+  - creates a new `MonsterAttack` associated with the proper kaiju and city associations
+  - this gives the attack a random `severity` between 1 and 10
+
 - `Kaiju.most_attacks`
   - returns the kaiju with the most monster_attacks
+
+- `Kaiju#redact_reports`
+  - deletes all `monster_attacks` associated with that kaiju
+
+#### MonsterAttack
+
+- `MonsterAttack#full_report`
+  - returns a string detailing the attack like so:
+  ```
+  Location: {insert city name}
+  Sighting Of: {insert monster name}
+  {insert incident report}
+  ```
+
+- `MonsterAttack#defend`
+  - if the attack's severity is below `5` the city's population increases by `1000` as tourists flock to see the kaiju
+  - if the severity is above `5`, half the population leaves the city
+  - if the severity is `10` everyone leaves the city and the population becomes `0`
+
+#### City
+
+- `City#full_reports`
+  - returns an array of strings where every string is the `full_report` for each `MonsterAttack` for that city
+- `City#average_severity`
+  - returns the average severity level for all monster attacks
+- `City#most_requent_kaiju`
+  - returns the kaiju that has attacked the city most often
